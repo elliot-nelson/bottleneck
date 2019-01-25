@@ -160,12 +160,14 @@ Instead of throttling maybe [you want to batch up requests](#batching) into fewe
 
 #### Gotchas
 
-* If you're passing an object's method as a job, you'll probably need to `bind()` the object:
+* If you're passing an object's method as a job directly, you'll probably need to `bind()` the object:
 ```js
 // instead of this:
-limiter.schedule(() => object.doSomething(arg1, arg2));
+limiter.schedule(object.doSomething(arg1, arg2));
 // do this:
-limiter.schedule(() => object.doSomething.bind(object)(arg1, arg2));
+limiter.schedule(object.doSomething.bind(object)(arg1, arg2));
+// or, wrap it in an arrow function instead:
+// limiter.schedule(() => object.doSomething(arg1, arg2));
 ```
 
 * Bottleneck requires Node 6+ to function. However, an ES5 build is included: `var Bottleneck = require("bottleneck/es5");`.
